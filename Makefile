@@ -5,58 +5,55 @@
 #                                                     +:+ +:+         +:+      #
 #    By: abenamar <abenamar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/06/18 00:58:25 by abenamar          #+#    #+#              #
-#    Updated: 2023/06/20 18:52:47 by abenamar         ###   ########.fr        #
+#    Created: 2023/06/24 00:14:17 by abenamar          #+#    #+#              #
+#    Updated: 2023/06/24 23:43:32 by abenamar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME := pipex
+PROJECT_DIR := ..
 
-LIBFT := $(CURDIR)/libft/libft.a
+PROGRAM := $(PROJECT_DIR)/pipex
 
-INCLUDES := -I $(CURDIR)
-INCLUDES += -I $(CURDIR)/libft
+COMMAND := $(PROGRAM)
 
-LDFLAGS := -L$(CURDIR)/libft
+VALGRIND := valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes
 
-LDLIBS := -lft
+all: norm $(PROGRAM) vmandatory
 
-SRCS := ft_exec.c
-SRCS += ft_pipe.c
-SRCS += pipex.c
+$(PROGRAM):
+	@make -C $(PROJECT_DIR)
 
-OBJS := $(SRCS:.c=.o)
+norm:
+	@echo "\033[0;36m######################################## norminette ########################################\033[0m"
+	@norminette ..
 
-BOBJS := $(BSRCS:.c=.o)
+outfiles:
+	@mkdir outfiles
 
-CC := cc
+myecho:
+	@cc myecho.c -o myecho
 
-CFLAGS := -Wall
-CFLAGS += -Wextra
-CFLAGS += -Werror
-CFLAGS += -g3
+valgrind:
+	@echo "\033[0;36m######################################### valgrind #########################################\033[0m"
 
-RM := rm -f
+vmandatory: COMMAND := $(VALGRIND) $(PROGRAM)
+vmandatory: valgrind mandatory
 
-%.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@ $(INCLUDES)
-
-$(NAME): $(LIBFT) $(OBJS)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(INCLUDES) $(LDFLAGS) $(LDLIBS)
-
-$(LIBFT):
-	@$(MAKE) -C $(CURDIR)/libft $(findstring bonus, $(MAKECMDGOALS))
-
-bonus: $(NAME)
-
-all: $(NAME)
-
-clean:
-	$(RM) $(OBJS)
-
-fclean: clean
-	$(RM) $(NAME)
-
-re: fclean all
-
-.PHONY: re fclean clean all bonus
+mandatory: $(PROGRAM) outfiles myecho
+	@echo "\033[0;36m######################################### mandatory ########################################\033[0m"
+	@testfunc () { \
+	actual="$(COMMAND) $$2 \"$$3\" \"$$4\" outfiles/actual$$1";\
+	expected="< $$2 $$3 | $$4 > outfiles/expected$$1";\
+	echo "$$1) $$expected";\
+	eval $$actual;\
+	eval $$expected;\
+	if [ "$$(diff outfiles/actual$$1 outfiles/expected$$1)" != "" ]; then\
+		echo "\033[0;31mKO\033[0m";\
+	else\
+		echo "\033[0;32mOK\033[0m";\
+	fi };\
+	testfunc 1 infiles/loremipsum "cat -e" "grep Et";\
+	testfunc 2 infiles/loremipsum "grep sit" "wc -l";\
+	testfunc 3 infiles/loremipsum "wc -w" "tee";\
+	testfunc 4 infiles/loremipsum "ls -ls" "grep my";\
+	testfunc 5 infiles/loremipsum "./myscript hello 1 world 2 !" "head -n 8"
