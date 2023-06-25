@@ -6,7 +6,7 @@
 /*   By: abenamar <abenamar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 01:20:11 by abenamar          #+#    #+#             */
-/*   Updated: 2023/06/23 17:20:14 by abenamar         ###   ########.fr       */
+/*   Updated: 2023/06/25 17:08:26 by abenamar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,9 @@ static void	ft_redirect_output(char *filename, int openflag, int *readfd)
 	str = get_next_line(readfd[0]);
 	while (str)
 		(ft_putstr_fd(str, fd), free(str), str = get_next_line(readfd[0]));
-	if (close(readfd[0]) == -1 || close(fd) == -1)
+	if (close(readfd[0]) == -1)
+		(perror("close"), exit(EXIT_FAILURE));
+	if (close(fd) == -1)
 		(perror(filename), exit(EXIT_FAILURE));
 }
 
@@ -75,15 +77,13 @@ int	main(int ac, char **av, char **env)
 	{
 		ft_here_document(av[2], ft_strlen(av[2]), writefd);
 		wstatus = ft_pipe(av + 3, env, writefd, readfd);
-		if (!wstatus)
-			ft_redirect_output(av[ac - 1], O_APPEND, readfd);
+		ft_redirect_output(av[ac - 1], O_APPEND, readfd);
 	}
 	else
 	{
 		ft_redirect_input(av[1], writefd);
 		wstatus = ft_pipe(av + 2, env, writefd, readfd);
-		if (!wstatus)
-			ft_redirect_output(av[ac - 1], O_TRUNC, readfd);
+		ft_redirect_output(av[ac - 1], O_TRUNC, readfd);
 	}
 	return (WEXITSTATUS(wstatus));
 }
