@@ -6,7 +6,7 @@
 /*   By: abenamar <abenamar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 01:21:16 by abenamar          #+#    #+#             */
-/*   Updated: 2023/06/23 17:17:49 by abenamar         ###   ########.fr       */
+/*   Updated: 2023/06/25 11:16:02 by abenamar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ Usage: pipex file1 cmd1 cmd2 cmd3 ... cmdn file2\n\
 #  define DLINES_MAX	32
 # endif
 
-uint8_t	ft_exec(char *cmd, char **env);
+void	ft_exec(char *cmd, char **env);
 int		ft_pipe(char **av, char **env, int *readfd, int *writefd);
 
 #endif
