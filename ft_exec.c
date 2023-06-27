@@ -6,7 +6,7 @@
 /*   By: abenamar <abenamar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 23:07:38 by abenamar          #+#    #+#             */
-/*   Updated: 2023/06/25 18:54:45 by abenamar         ###   ########.fr       */
+/*   Updated: 2023/06/27 00:44:42 by abenamar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,6 @@ static char	*ft_realpath(char **env, char *filename, size_t filename_len)
 	char	**envpath;
 	char	*filepath;
 
-	if (!access(filename, X_OK))
-		return (ft_strdup(filename));
 	i = 0;
 	while (ft_strncmp(env[i], "PATH=", 5))
 		++i;
