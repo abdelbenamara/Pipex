@@ -6,7 +6,7 @@
 /*   By: abenamar <abenamar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 01:20:11 by abenamar          #+#    #+#             */
-/*   Updated: 2023/06/25 17:08:26 by abenamar         ###   ########.fr       */
+/*   Updated: 2023/06/26 21:00:32 by abenamar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int	main(int ac, char **av, char **env)
 	int	wstatus;
 
 	if (ac < 5)
-		return (ft_dprintf(STDERR_FILENO, USAGE), EXIT_FAILURE);
+		return (ft_dprintf(STDERR_FILENO, USAGE), 2);
 	if (pipe(writefd) == -1)
 		(perror("pipe"), exit(EXIT_FAILURE));
 	if (!ft_strncmp(av[1], "here_doc", 9))
