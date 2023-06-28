@@ -53,4 +53,4 @@ dkms.conf
 
 # Project
 myecho
-outfiles/
+out/
