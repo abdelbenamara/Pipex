@@ -6,7 +6,7 @@
 /*   By: abenamar <abenamar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 18:02:17 by abenamar          #+#    #+#             */
-/*   Updated: 2023/06/23 16:32:54 by abenamar         ###   ########.fr       */
+/*   Updated: 2023/06/29 18:40:33 by abenamar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ static void	ft_child_process(char *cmd, char **env, int *writefd, int *readfd)
 		(perror("close"), exit(EXIT_FAILURE));
 	if (close(readfd[1]) == -1)
 		(perror("close"), exit(EXIT_FAILURE));
-	exit(EXIT_SUCCESS);
 }
 
 static void	ft_parent_process(char **av, int *writefd, int *readfd)
@@ -90,7 +89,10 @@ int	ft_pipe(char **av, char **env, int *writefd, int *readfd)
 	if (cpid == -1)
 		(perror("fork"), exit(EXIT_FAILURE));
 	if (!cpid)
+	{
 		ft_child_process(av[0], env, writefd, readfd);
+		exit(EXIT_SUCCESS);
+	}
 	else
 	{
 		if (close(writefd[1]) == -1)
