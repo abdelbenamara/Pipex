@@ -6,7 +6,7 @@
 /*   By: abenamar <abenamar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 23:07:38 by abenamar          #+#    #+#             */
-/*   Updated: 2023/06/27 00:44:42 by abenamar         ###   ########.fr       */
+/*   Updated: 2023/08/02 01:57:47 by abenamar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,8 @@ static char	*ft_realpath(char **env, char *filename, size_t filename_len)
 			return (ft_free_tab(envpath), NULL);
 		if (!access(filepath, X_OK))
 			return (ft_free_tab(envpath), filepath);
-		(free(filepath), ++i);
+		free(filepath);
+		++i;
 	}
 	return (ft_free_tab(envpath), ft_strdup(filename));
 }
@@ -101,5 +102,6 @@ void	ft_exec(char *cmd, char **env)
 		(perror(path), ft_free_tab(args), free(path), exit(126));
 	else if (execve(path, args, env) == -1)
 		(perror(path), ft_free_tab(args), free(path), exit(EXIT_FAILURE));
-	(ft_free_tab(args), free(path));
+	ft_free_tab(args);
+	free(path);
 }
