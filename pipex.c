@@ -6,7 +6,7 @@
 /*   By: abenamar <abenamar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 01:20:11 by abenamar          #+#    #+#             */
-/*   Updated: 2023/08/02 01:57:57 by abenamar         ###   ########.fr       */
+/*   Updated: 2023/08/02 03:18:04 by abenamar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ static void	ft_here_document(char *limiter, int *writefd)
 	char			*str;
 
 	eof = ft_strjoin(limiter, "\n");
+	if (!eof)
+		return ;
 	str = get_next_line(STDIN_FILENO);
 	while (ft_strncmp(str, eof, len))
 		(ft_putstr_fd(str, writefd[1]), \
