@@ -6,7 +6,7 @@
 /*   By: abenamar <abenamar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 01:20:11 by abenamar          #+#    #+#             */
-/*   Updated: 2023/06/26 21:00:32 by abenamar         ###   ########.fr       */
+/*   Updated: 2023/08/02 01:57:57 by abenamar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,18 @@ static void	ft_redirect_input(char *filename, int *writefd)
 		(perror(filename), exit(EXIT_FAILURE));
 }
 
-static void	ft_here_document(char *limiter, size_t limiter_len, int *writefd)
+static void	ft_here_document(char *limiter, int *writefd)
 {
-	char	*str;
+	const size_t	len = ft_strlen(limiter) + 2;
+	char			*eof;
+	char			*str;
 
+	eof = ft_strjoin(limiter, "\n");
 	str = get_next_line(STDIN_FILENO);
-	while (ft_strncmp(str, limiter, limiter_len))
+	while (ft_strncmp(str, eof, len))
 		(ft_putstr_fd(str, writefd[1]), \
 			free(str), str = get_next_line(STDIN_FILENO));
+	free(eof);
 	free(str);
 }
 
@@ -75,7 +79,7 @@ int	main(int ac, char **av, char **env)
 		(perror("pipe"), exit(EXIT_FAILURE));
 	if (!ft_strncmp(av[1], "here_doc", 9))
 	{
-		ft_here_document(av[2], ft_strlen(av[2]), writefd);
+		ft_here_document(av[2], writefd);
 		wstatus = ft_pipe(av + 3, env, writefd, readfd);
 		ft_redirect_output(av[ac - 1], O_APPEND, readfd);
 	}
