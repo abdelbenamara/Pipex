@@ -1,6 +1,6 @@
 #!/bin/bash
 
-grep -e '^hello' -e bye << BYE | sed "s/you/they/g" >> out/expected22
+grep -e '^hello' -e bye -e BYE << BYE | sed "s/you/they/g" >> out/expected22
 hello
 this
 is
@@ -24,9 +24,11 @@ bye then
 hmmmm 
 more like :
 Bye!
+or maybe :
+BYEE
 BYE
 
-cat << STDIN | $1 here_doc BYE "grep -e '^hello' -e bye" "sed \"s/you/they/g\"" out/actual22
+cat << STDIN | $1 here_doc BYE "grep -e '^hello' -e bye -e BYE" "sed \"s/you/they/g\"" out/actual22
 hello
 this
 is
@@ -50,6 +52,8 @@ bye then
 hmmmm 
 more like :
 Bye!
+or maybe :
+BYEE
 BYE
 STDIN
 
