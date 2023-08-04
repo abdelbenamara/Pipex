@@ -6,7 +6,7 @@
 /*   By: abenamar <abenamar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 18:02:17 by abenamar          #+#    #+#             */
-/*   Updated: 2023/06/29 18:40:33 by abenamar         ###   ########.fr       */
+/*   Updated: 2023/08/04 01:56:10 by abenamar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,18 +21,19 @@ static void	ft_setup_command(char *cmd)
 	i = 0;
 	while (cmd[i])
 	{
-		if ((cmd[i] == '\'' || cmd[i] == '"') && (!i || cmd[i - 1] == ' '))
+		if (cmd[i] == '\'' || cmd[i] == '"')
 		{
 			c = cmd[i];
-			j = i;
-			while (cmd[++j] && cmd[j] != c)
-				if (cmd[j] == ' ')
-					cmd[j] = '\n';
-			if (cmd[j] == c)
+			j = i + 1;
+			while (cmd[j] && cmd[j] != c)
+				++j;
+			if (c == cmd[j])
 			{
 				cmd[i] = ' ';
+				while ((++i) < j)
+					if (cmd[i] == ' ')
+						cmd[i] = '\n';
 				cmd[j] = ' ';
-				i = j;
 			}
 		}
 		++i;
